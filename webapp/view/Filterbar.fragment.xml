@@ -1,0 +1,51 @@
+<core:FragmentDefinition  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar">
+	<fb:FilterBar showClearOnFB="true" clear="onClear" search="onSearch" showRestoreButton="true" showClearButton="true" showFilterConfiguration="false" header="Filters">
+		<fb:filterGroupItems>
+			<fb:FilterGroupItem groupName="FilterGroup" name="InvoiceType" label="InvoiceType" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:control>
+					<ComboBox selectedKey="{Filter>/InvoiceType}" items="{/OrderTypeSet}">
+						<core:ListItem key="{Type}" text="{Description}" />
+					</ComboBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="FilterGroup" name="Status" label="Status" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:control>
+					<ComboBox selectedKey="{Filter>/Status}">
+						<items>
+							<core:Item key="RUNNING" text="RUNNING"/>
+							<core:Item key="ERRONEOUS" text="ERRONEOUS"/>
+							<core:Item key="SUSPENDED" text="SUSPENDED"/>
+							<core:Item key="CANCELED" text="CANCELED"/>
+							<core:Item key="COMPLETED" text="COMPLETED"/>
+						</items>
+					</ComboBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="FilterGroup" name="Date" label="Date" labelTooltip="Tooltip Example" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:control>
+					<DateRangeSelection
+						id="DRS2"
+						dateValue="{Filter>/FromDate}"
+						secondDateValue="{Filter>/ToDate}"
+						change="handleChange"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="FilterGroup" name="CompCode" label="{i18n>inv-form-companycode}" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:control>
+				    <ComboBox selectedKey="{Filter>/Compcode}" showSecondaryValues="true" items="{/CompanyCodeSndSet}">
+						<core:ListItem key="{Bukrs}" text="{Bukrs}" additionalText="{Butxt}"/>
+					</ComboBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="FilterGroup" name="CompCodeReceiver" label="{i18n>inv-form-companycodereceiver}" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:control>
+					<ComboBox selectedKey="{Filter>/CompcodeReciever}" showSecondaryValues="true"
+						items="{/CompanyCodeRcvSet}">
+						<core:ListItem key="{Bukrs}" text="{Bukrs}" additionalText="{Butxt}"/>
+					</ComboBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+
+		</fb:filterGroupItems>
+	</fb:FilterBar>	
+</core:FragmentDefinition>

@@ -1,0 +1,23 @@
+<mvc:View controllerName="com.nn.finance.interinvoicingadmin.controller.Main" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+	<Shell id="shell">
+		<App id="app" class="sapUiSizeCompact">
+			<pages>
+				<Page id="page" title="{i18n>title}" >
+					<content>
+						<VBox>
+							<core:Fragment fragmentName="com.nn.finance.interinvoicingadmin.view.Filterbar" type="XML"/>
+							<core:Fragment fragmentName="com.nn.finance.interinvoicingadmin.view.Table" type="XML"/>
+						</VBox>
+					</content>
+					<footer>
+						<Bar>
+							<contentRight>
+								<Button text="Export" tooltip="Export to excel" icon="sap-icon://excel-attachment" press="onDataExport" />
+							</contentRight>
+						</Bar>
+					</footer>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

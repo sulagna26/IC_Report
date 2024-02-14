@@ -1,0 +1,83 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+	<Table
+		growing="true"
+		growingThreshold="1000"
+		id="idTaskCollection"
+		noDataText="{i18n>inv-form-li-noinvoices}"
+		items="{Overview>/}">
+		<!--
+		<headerToolbar>
+			<OverflowToolbar>
+				<Title text="Workflows" level="H2"/>
+				<ToolbarSpacer/>
+				<Button
+					tooltip="Export to excel"
+					icon="sap-icon://excel-attachment"
+					press="onDataExport" />
+			</OverflowToolbar>
+		</headerToolbar>
+		-->
+		<columns>
+			<Column	hAlign="Begin">
+				<Text text="{i18n>inv-form-invoiceflow}" />
+			</Column>
+			<Column	hAlign="Begin">
+				<Text text="{i18n>inv-form-status}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" >
+				<Text text="{i18n>inv-form-initials}" />
+			</Column>
+			<Column hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>inv-form-companycode}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Begin" >
+				<Text text="{i18n>inv-form-initialsreceiver}" />
+			</Column>
+			<Column hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>inv-form-companycodereceiver}" />
+			</Column>
+			<Column minScreenWidth="Tablet" hAlign="End" demandPopin="true">
+				<Text text="{i18n>inv-form-li-amount}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>inv-form-created}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>inv-form-ordernumber}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text = "Cost Center"/>
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text = "WBS"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem vAlign="Middle" type="Inactive">
+				<cells>
+					<Text text="{Overview>startEvent/invoiceFlow}"/>
+					<Text text="{Overview>statustext}"/>
+					<Text text="{Overview>startEvent/senderInitials}"/>
+					<Text text="{Overview>startEvent/senderCcode}"/>
+					<Text text="{Overview>startEvent/receiverInitials}"/>
+					<Text text="{Overview>startEvent/receiverCcode}"/>
+					<Text text="{
+					  	path: 'Overview>startEvent/totalAmount',
+					    type: 'sap.ui.model.type.Float',
+					    formatOptions: {		
+					    	maxFractionDigits : 2, 
+							minFractionDigits : 2, 
+				            groupingEnabled: 'true', 
+ 							groupingSeparator: '.',
+ 							decimalSeparator: ','
+			        }} {Overview>startEvent/currency}"/>
+					<Text text="{ path: 'Overview>createdat', type: 'sap.ui.model.type.Date', formatOptions: {pattern:'dd.MM.yyyy'}}"/>
+					<Text text="{Overview>ordernumber}"/>
+					<Text text="{Overview>costCenter}"/>
+					<Text text="{Overview>wbs}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+
+</core:FragmentDefinition>
