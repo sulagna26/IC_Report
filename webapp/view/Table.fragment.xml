@@ -73,8 +73,8 @@
 			        }} {Overview>startEvent/currency}"/>
 					<Text text="{ path: 'Overview>createdat', type: 'sap.ui.model.type.Date', formatOptions: {pattern:'dd.MM.yyyy'}}"/>
 					<Text text="{Overview>ordernumber}"/>
-					<Text text="{Overview>costCenter}"/>
-					<Text text="{Overview>wbs}"/>
+					<Text text="{Overview>sndCostCenter}"/>
+					<Text text="{Overview>sndWbs}"/>
 				</cells>
 			</ColumnListItem>
 		</items>

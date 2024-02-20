@@ -28,7 +28,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				columns: [{
 					name: "InvoiceType",
 					template: {
-						content: "{invoicetype}"
+						content: "{startEvent/invoiceFlow}"
 					}
 				}, {
 					name: "Status",
@@ -38,32 +38,32 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				}, {
 					name: "Sender Initials",
 					template: {
-						content: "{initialssender}"
+						content: "{startEvent/senderInitials}"
 					}
 				}, {
 					name: "Sender C.Code",
 					template: {
-						content: "{compcode}"
+						content: "{startEvent/senderCcode}"
 					}
 				}, {
 					name: "Receiver Initials",
 					template: {
-						content: "{initialsreceiver}"
+						content: "{startEvent/receiverInitials}"
 					}
 				}, {
 					name: "Receiver C.Code",
 					template: {
-						content: "{compcodeReciever}"
+						content: "{startEvent/receiverCcode}"
 					}
 				}, {
 					name: "Amount",
 					template: {
-						content: "{total}"
+						content: "{startEvent/totalAmount}"
 					}
 				}, {
 					name: "Currency",
 					template: {
-						content: "{currency}"
+						content: "{startEvent/currency}"
 					}
 				}, {
 					name: "Created",
@@ -83,7 +83,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 					template: {
 						content: "{ordernumber}"
 					}
-				}]
+				},{
+					name: "Cost Center",
+					template: {
+						content: "{sndCostCenter}"
+					}
+				},{
+					name: "WBS",
+					template: {
+						content: "{sndWbs}"
+					}
+				}
+			]
 			});
 			t.saveFile().catch(function (e) {}).then(function () {
 				t.destroy()
@@ -96,6 +107,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 			var r = t.getProperty("/Status");
 			var n = t.getProperty("/FromDate");
 			var o = t.getProperty("/ToDate");
+			var filSndComp = t.getProperty("/Compcode");
+			var filRcvComp = t.getProperty("/CompcodeReciever");
 			var a = sUri + "?definitionId=" + e + "&$top=1000";
 			if (r) {
 				a = a + "&status=" + r
@@ -106,6 +119,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 			if (o) {
 				a = a + "&startedUpTo=" + o.toISOString()
 			}
+			// if (filSndComp) {
+			// 	a = a
+			// }
 			return new Promise(function (e, t) {
 				$.ajax({
 					url: a,
@@ -134,6 +150,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 						success: function (r) {
 							r.id = e[a].id;
 							r.statustext = e[a].status;
+							r.sndCostCenter = r.startEvent.orderitems[0].itemsObj[0].costCenter;
+							r.sndWbs = r.startEvent.orderitems[0].itemsObj[0].wbs;
 							r.createdat = new Date(e[a].startedAt);
 							if (r.response && r.response.d) {
 								r.ordernumber = r.response.d.Vbeln
