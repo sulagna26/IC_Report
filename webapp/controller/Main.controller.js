@@ -1,7 +1,12 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/util/Export", "sap/ui/core/util/ExportTypeCSV"], function (
-	e, t, r, n) {
+sap.ui.define([	"sap/ui/core/mvc/Controller", 
+			 	"sap/m/MessageToast", 
+				"sap/ui/core/util/Export", 
+				"sap/ui/core/util/ExportTypeCSV",
+				"com/nn/finance/interinvoicingadmin/model/formatter"], 
+	function (e, t, r, n, formatter) {
 	"use strict";
 	return e.extend("com.nn.finance.interinvoicingadmin.controller.Main", {
+		formatter: formatter,
 		onInit: function () {},
 		onClear: function (e) {
 			var t = this.getView().getModel("Filter");
@@ -81,7 +86,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				}, {
 					name: "Order number",
 					template: {
-						content: "{ordernumber}"
+						content: "{custom/vbeln}"
 					}
 				},{
 					name: "Cost Center",
@@ -187,7 +192,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				}
 			}
 			t.setData(e);
-			this.getView().setBusy(false)
+			if (e.length > 0) {
+				this.getView().byId("idExportXls").setEnabled(true);	
+			}else{
+				this.getView().byId("idExportXls").setEnabled(false);
+			}
+			this.getView().setBusy(false);
 		}
 	})
 });

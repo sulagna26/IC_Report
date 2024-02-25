@@ -4,7 +4,7 @@
 			<fb:FilterGroupItem groupName="FilterGroup" name="InvoiceType" label="InvoiceType" partOfCurrentVariant="true" visibleInFilterBar="true">
 				<fb:control>
 					<ComboBox selectedKey="{Filter>/InvoiceType}" items="{/OrderTypeSet}">
-						<core:ListItem key="{Type}" text="{Description}" />
+						<core:ListItem key="{Type}" text="{Type}" />
 					</ComboBox>
 				</fb:control>
 			</fb:FilterGroupItem>

@@ -4,19 +4,14 @@
 		growingThreshold="1000"
 		id="idTaskCollection"
 		noDataText="{i18n>inv-form-li-noinvoices}"
+		alternateRowColors="true"
 		items="{Overview>/}">
-		<!--
 		<headerToolbar>
-			<OverflowToolbar>
-				<Title text="Workflows" level="H2"/>
-				<ToolbarSpacer/>
-				<Button
-					tooltip="Export to excel"
-					icon="sap-icon://excel-attachment"
-					press="onDataExport" />
-			</OverflowToolbar>
-		</headerToolbar>
-		-->
+				<OverflowToolbar >
+					<ToolbarSpacer />
+					<Button id="idExportXls" text="Export" enabled="false" tooltip="Export to excel" icon="sap-icon://excel-attachment" press="onDataExport" />
+				</OverflowToolbar>
+			</headerToolbar>
 		<columns>
 			<Column	hAlign="Begin">
 				<Text text="{i18n>inv-form-invoiceflow}" />
@@ -36,7 +31,7 @@
 			<Column hAlign="Begin" minScreenWidth="Tablet" demandPopin="true">
 				<Text text="{i18n>inv-form-companycodereceiver}" />
 			</Column>
-			<Column minScreenWidth="Tablet" hAlign="End" demandPopin="true">
+			<Column minScreenWidth="Tablet" hAlign="Begin" demandPopin="true">
 				<Text text="{i18n>inv-form-li-amount}" />
 			</Column>
 			<Column minScreenWidth="Tablet" demandPopin="true">
@@ -55,8 +50,12 @@
 		<items>
 			<ColumnListItem vAlign="Middle" type="Inactive">
 				<cells>
-					<Text text="{Overview>startEvent/invoiceFlow}"/>
-					<Text text="{Overview>statustext}"/>
+					<Text text="{ parts : ['Overview>startEvent/invoiceFlow'], formatter: '.formatter.formatInvoiceFlow'}"/>
+					<!-- <Text text="{Overview>statustext}"/> -->
+					<ObjectStatus text="{ parts : ['Overview>statustext', 'Overview>custom/approved'], formatter: '.formatter.formatStatus'}"
+									  icon="{ parts:['Overview>statustext', 'Overview>custom/approved'], formatter: '.formatter.formatIcon' }"
+									  state="{ parts:['Overview>statustext', 'Overview>custom/approved'], formatter: '.formatter.formatState' }">
+					</ObjectStatus>
 					<Text text="{Overview>startEvent/senderInitials}"/>
 					<Text text="{Overview>startEvent/senderCcode}"/>
 					<Text text="{Overview>startEvent/receiverInitials}"/>
@@ -72,7 +71,7 @@
  							decimalSeparator: ','
 			        }} {Overview>startEvent/currency}"/>
 					<Text text="{ path: 'Overview>createdat', type: 'sap.ui.model.type.Date', formatOptions: {pattern:'dd.MM.yyyy'}}"/>
-					<Text text="{Overview>ordernumber}"/>
+					<ObjectStatus text="{Overview>custom/vbeln}" state="Success"></ObjectStatus>
 					<Text text="{Overview>sndCostCenter}"/>
 					<Text text="{Overview>sndWbs}"/>
 				</cells>
