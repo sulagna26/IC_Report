@@ -15,7 +15,7 @@ sap.ui.define([
                 return "Information";
             } else if(status === 'COMPLETED' && (approved === true || typeof(approved) === "undefined")){
                 return "Success";
-            }else if (status === 'COMPLETED' && approved === false) {
+            }else if (status === 'REJECTED') {
                 return "Warning"
             }else if(status === 'ERRONEOUS'){
                 return "Error";
@@ -30,7 +30,7 @@ sap.ui.define([
                 return "sap-icon://pending";
             } else if(status === 'COMPLETED' && (approved === true || typeof(approved) === "undefined")){
                 return "sap-icon://status-completed";
-            }else if(status === 'COMPLETED' && approved === false){
+            }else if(status === 'REJECTED'){
                 return "sap-icon://decline";
             }else if(status === 'ERRONEOUS'){
                 return "sap-icon://status-error";
@@ -50,7 +50,7 @@ sap.ui.define([
             }
         },
         handleIcon: function(status, approved){
-            if (status === 'COMPLETED' && approved === false) {
+            if (status === 'REJECTED') {
                 return "sap-icon://comment";
             }else if(status === 'ERRONEOUS'){
                 return "sap-icon://information";
@@ -59,7 +59,7 @@ sap.ui.define([
             }
         },
         handlePress: function(status, approved){
-            if (status === 'COMPLETED' && approved === false) {
+            if (status === 'REJECTED') {
                 return "onPressComment"
             }else if(status === 'ERRONEOUS'){
                 return "onViewErrors";

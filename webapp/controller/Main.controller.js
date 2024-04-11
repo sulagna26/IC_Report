@@ -110,6 +110,9 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 			var e = "eu10.dev-cf-journalentry.ictest.processIntercompanyInvoicing";
 			var t = this.getView().getModel("Filter");
 			var r = t.getProperty("/Status");
+			if (r === 'REJECTED') {
+				r = 'COMPLETED';
+			}
 			var n = t.getProperty("/FromDate");
 			var o = t.getProperty("/ToDate");
 			var filSndComp = t.getProperty("/Compcode");
@@ -147,6 +150,7 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 				var n = new Promise(function (t, n) {
 					var o = sUri + "/" + e[r].id + "/context";
 					var a = r;
+					var index = r;
 					$.ajax({
 						url: o,
 						method: "GET",
@@ -155,6 +159,11 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 						success: function (r) {
 							r.id = e[a].id;
 							r.statustext = e[a].status;
+							if (typeof(r.custom) !== 'undefined') {
+								if ( (e[index].status === 'COMPLETED' && !(r.custom.approved))) {
+									r.statustext = 'REJECTED';
+								}
+							}
 							r.sndCostCenter = r.startEvent.orderitems[0].itemsObj[0].costCenter;
 							r.sndWbs = r.startEvent.orderitems[0].itemsObj[0].wbs;
 							r.createdat = new Date(e[a].startedAt);
@@ -175,9 +184,23 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 		_updateList: function (e) {
 			var t = this.getView().getModel("Overview");
 			var r = this.getView().getModel("Filter");
+			var filterStatus = r.getProperty("/Status");
 			var n = r.getProperty("/Compcode");
 			var o = r.getProperty("/CompcodeReciever");
 			var a = r.getProperty("/InvoiceType");
+			if(filterStatus === 'REJECTED'){
+				for(var j=e.length - 1; j>=0; j--){
+					if (e[j].statustext !== filterStatus) {
+						e.splice(j, 1);
+					}
+				}
+			}else if(filterStatus === 'COMPLETED'){
+				for(var j=e.length - 1; j>=0; j--){
+					if (e[j].statustext !== filterStatus) {
+						e.splice(j, 1);
+					}
+				}
+			}
 			if (n || o || a) {
 				for (var i = 0; i < e.length;) {
 					if (n && e[i].compcode !== n) {

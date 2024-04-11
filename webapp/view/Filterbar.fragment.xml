@@ -17,6 +17,7 @@
 							<core:Item key="SUSPENDED" text="SUSPENDED"/>
 							<core:Item key="CANCELED" text="CANCELED"/>
 							<core:Item key="COMPLETED" text="COMPLETED"/>
+							<core:Item key="REJECTED" text="REJECTED"></core:Item>
 						</items>
 					</ComboBox>
 				</fb:control>
