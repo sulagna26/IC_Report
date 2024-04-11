@@ -1,7 +1,12 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/util/Export", "sap/ui/core/util/ExportTypeCSV"], function (
-	e, t, r, n) {
+sap.ui.define([	"sap/ui/core/mvc/Controller", 
+			 	"sap/m/MessageToast", 
+				"sap/ui/core/util/Export", 
+				"sap/ui/core/util/ExportTypeCSV",
+				"com/nn/finance/interinvoicingadmin/model/formatter"], 
+	function (e, t, r, n, formatter) {
 	"use strict";
 	return e.extend("com.nn.finance.interinvoicingadmin.controller.Main", {
+		formatter: formatter,
 		onInit: function () {},
 		onClear: function (e) {
 			var t = this.getView().getModel("Filter");
@@ -28,7 +33,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				columns: [{
 					name: "InvoiceType",
 					template: {
-						content: "{invoicetype}"
+						content: "{startEvent/invoiceFlow}"
 					}
 				}, {
 					name: "Status",
@@ -38,32 +43,32 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				}, {
 					name: "Sender Initials",
 					template: {
-						content: "{initialssender}"
+						content: "{startEvent/senderInitials}"
 					}
 				}, {
 					name: "Sender C.Code",
 					template: {
-						content: "{compcode}"
+						content: "{startEvent/senderCcode}"
 					}
 				}, {
 					name: "Receiver Initials",
 					template: {
-						content: "{initialsreceiver}"
+						content: "{startEvent/receiverInitials}"
 					}
 				}, {
 					name: "Receiver C.Code",
 					template: {
-						content: "{compcodeReciever}"
+						content: "{startEvent/receiverCcode}"
 					}
 				}, {
 					name: "Amount",
 					template: {
-						content: "{total}"
+						content: "{startEvent/totalAmount}"
 					}
 				}, {
 					name: "Currency",
 					template: {
-						content: "{currency}"
+						content: "{startEvent/currency}"
 					}
 				}, {
 					name: "Created",
@@ -81,9 +86,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				}, {
 					name: "Order number",
 					template: {
-						content: "{ordernumber}"
+						content: "{custom/vbeln}"
 					}
-				}]
+				},{
+					name: "Cost Center",
+					template: {
+						content: "{sndCostCenter}"
+					}
+				},{
+					name: "WBS",
+					template: {
+						content: "{sndWbs}"
+					}
+				}
+			]
 			});
 			t.saveFile().catch(function (e) {}).then(function () {
 				t.destroy()
@@ -94,8 +110,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 			var e = "eu10.dev-cf-journalentry.ictest.processIntercompanyInvoicing";
 			var t = this.getView().getModel("Filter");
 			var r = t.getProperty("/Status");
+			if (r === 'REJECTED') {
+				r = 'COMPLETED';
+			}
 			var n = t.getProperty("/FromDate");
 			var o = t.getProperty("/ToDate");
+			var filSndComp = t.getProperty("/Compcode");
+			var filRcvComp = t.getProperty("/CompcodeReciever");
 			var a = sUri + "?definitionId=" + e + "&$top=1000";
 			if (r) {
 				a = a + "&status=" + r
@@ -106,6 +127,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 			if (o) {
 				a = a + "&startedUpTo=" + o.toISOString()
 			}
+			// if (filSndComp) {
+			// 	a = a
+			// }
 			return new Promise(function (e, t) {
 				$.ajax({
 					url: a,
@@ -126,6 +150,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				var n = new Promise(function (t, n) {
 					var o = sUri + "/" + e[r].id + "/context";
 					var a = r;
+					var index = r;
 					$.ajax({
 						url: o,
 						method: "GET",
@@ -134,6 +159,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 						success: function (r) {
 							r.id = e[a].id;
 							r.statustext = e[a].status;
+							if (typeof(r.custom) !== 'undefined') {
+								if ( (e[index].status === 'COMPLETED' && !(r.custom.approved))) {
+									r.statustext = 'REJECTED';
+								}
+							}
+							r.sndCostCenter = r.startEvent.orderitems[0].itemsObj[0].costCenter;
+							r.sndWbs = r.startEvent.orderitems[0].itemsObj[0].wbs;
 							r.createdat = new Date(e[a].startedAt);
 							if (r.response && r.response.d) {
 								r.ordernumber = r.response.d.Vbeln
@@ -152,9 +184,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 		_updateList: function (e) {
 			var t = this.getView().getModel("Overview");
 			var r = this.getView().getModel("Filter");
+			var filterStatus = r.getProperty("/Status");
 			var n = r.getProperty("/Compcode");
 			var o = r.getProperty("/CompcodeReciever");
 			var a = r.getProperty("/InvoiceType");
+			if(filterStatus === 'REJECTED'){
+				for(var j=e.length - 1; j>=0; j--){
+					if (e[j].statustext !== filterStatus) {
+						e.splice(j, 1);
+					}
+				}
+			}else if(filterStatus === 'COMPLETED'){
+				for(var j=e.length - 1; j>=0; j--){
+					if (e[j].statustext !== filterStatus) {
+						e.splice(j, 1);
+					}
+				}
+			}
 			if (n || o || a) {
 				for (var i = 0; i < e.length;) {
 					if (n && e[i].compcode !== n) {
@@ -169,7 +215,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "sap/ui/core/
 				}
 			}
 			t.setData(e);
-			this.getView().setBusy(false)
+			if (e.length > 0) {
+				this.getView().byId("idExportXls").setEnabled(true);	
+			}else{
+				this.getView().byId("idExportXls").setEnabled(false);
+			}
+			this.getView().setBusy(false);
 		}
 	})
 });
