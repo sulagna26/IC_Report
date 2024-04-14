@@ -203,11 +203,11 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 			}
 			if (n || o || a) {
 				for (var i = 0; i < e.length;) {
-					if (n && e[i].compcode !== n) {
+					if (n && e[i].startEvent.senderCcode !== n) {
 						e.splice(i, 1)
-					} else if (o && e[i].compcodeReciever !== o) {
+					} else if (o && e[i].startEvent.receiverCcode !== o) {
 						e.splice(i, 1)
-					} else if (a && e[i].invoicetype !== a) {
+					} else if (a && e[i].startEvent.invoiceFlow !== a) {
 						e.splice(i, 1)
 					} else {
 						i++
