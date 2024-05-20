@@ -40,6 +40,8 @@
           "semanticObject": "invadmin_semantic",
           "action": "display",
           "title": "{{flpTitle}}",
+          "info": "{{flpInfo}}",
+          "icon": "sap-icon://overview-chart",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
