@@ -7,7 +7,16 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 	"use strict";
 	return e.extend("com.nn.finance.interinvoicingadmin.controller.Main", {
 		formatter: formatter,
-		onInit: function () {},
+		
+		onInit: function () {
+			this.oRouter = this.getOwnerComponent().getRouter();
+			this.oRouter.getRoute("RouteMain").attachPatternMatched(this.onRouteMatched, this);
+		},
+
+		onRouteMatched: function (oEvent) {			
+			this.getView().getModel("Overview").setData([]);			
+		},
+
 		onClear: function (e) {
 			var t = this.getView().getModel("Filter");
 			t.getProperty("/InvoiceType", "");
