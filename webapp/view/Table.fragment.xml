@@ -3,7 +3,7 @@
 		growing="true"
 		growingThreshold="1000"
 		id="idTaskCollection"
-		noDataText="{i18n>inv-form-li-noinvoices}"
+		
 		alternateRowColors="true"
 		items="{Overview>/}">
 		<headerToolbar>
@@ -47,6 +47,14 @@
 				<Text text = "WBS"/>
 			</Column>
 		</columns>
+		<noData>
+            <IllustratedMessage id="idOverviewTableMsg"
+                illustrationType="sapIllus-SimpleEmptyList"
+                title="No data found"
+                description="Choose the right filters "
+                enableDefaultTitleAndDescription="false">                
+            </IllustratedMessage>
+        	</noData>
 		<items>
 			<ColumnListItem vAlign="Middle" type="Inactive">
 				<cells>

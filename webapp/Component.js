@@ -8,7 +8,8 @@ sap.ui.define(["sap/ui/core/UIComponent", "sap/ui/Device", "com/nn/finance/inter
 			e.prototype.init.apply(this, arguments);
 			this.getRouter().initialize();
 			this.setModel(n.createDeviceModel(), "device");
-			this.getModel("Overview").setSizeLimit(1e3)
+			this.getModel("Overview").setSizeLimit(1e3);
+			this.getModel("Overview").setData([]);
 		}
 	})
 });
