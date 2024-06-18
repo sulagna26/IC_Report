@@ -32,6 +32,14 @@
           "annotations": [],
           "odataVersion": "2.0"
         }
+      },
+      "bpaadmin":{
+        "uri": "bpaadmin/public/workflow/rest/v1/workflow-instances",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "2.0"
+        }
       }
     },
     "crossNavigation": {
