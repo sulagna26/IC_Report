@@ -115,7 +115,7 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 			})
 		},
 		_readWorkflows: function () {
-			var sUri = this.getOwnerComponent().getManifestObject().resolveUri(this.getOwnerComponent().getManifestEntry("sap.app").dataSources.bpatrigger.uri);
+			var sUri = this.getOwnerComponent().getManifestObject().resolveUri(this.getOwnerComponent().getManifestEntry("sap.app").dataSources.bpaadmin.uri);
 			var e = "eu10.dev-cf-journalentry.ictest.processIntercompanyInvoicing";
 			var t = this.getView().getModel("Filter");
 			var r = t.getProperty("/Status");
@@ -153,7 +153,7 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 			})
 		},
 		_readContext: function (e) {
-			var sUri = this.getOwnerComponent().getManifestObject().resolveUri(this.getOwnerComponent().getManifestEntry("sap.app").dataSources.bpatrigger.uri);
+			var sUri = this.getOwnerComponent().getManifestObject().resolveUri(this.getOwnerComponent().getManifestEntry("sap.app").dataSources.bpaadmin.uri);
 			var t = [];
 			for (var r = 0; r < e.length; r++) {
 				var n = new Promise(function (t, n) {
