@@ -12,7 +12,6 @@ sap.ui.define([	"sap/ui/core/mvc/Controller",
 			this.oRouter.getRoute("RouteMain").attachPatternMatched(this.onRouteMatched, this);
 		},
 
-		
 		onRouteMatched: function (oEvent) {			
 			this.getView().getModel("Overview").setData([]);			
 		},
